@@ -1,10 +1,10 @@
 import { useState } from "react";
-import AddStore from "./components/AddStore";
-import StoreList from "./components/StoreList";
-import AddPromotion from "./components/AddPromotion";
-import PromotionList from "./components/PromotionList";
-import AddEvent from "./components/AddEvent";
-import EventList from "./components/EventList";
+import AddStore from "./components/operator-service/AddStore";
+import StoreList from "./components/operator-service/StoreList";
+import AddPromotion from "./components/operator-service/AddPromotion";
+import PromotionList from "./components/operator-service/PromotionList";
+import AddEvent from "./components/operator-service/AddEvent";
+import EventList from "./components/operator-service/EventList";
 import HomePage from "./components/HomePage";
 import "./App.css";
 
