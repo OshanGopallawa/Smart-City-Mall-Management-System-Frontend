@@ -1,12 +1,11 @@
 import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
-// Vite requires import.meta.env and VITE_ prefix (not process.env / REACT_APP_)
 const GATEWAY_URL = (
-  import.meta.env.VITE_USER_API_URL ||
-  import.meta.env.VITE_MALL_API_URL ||
-  import.meta.env.VITE_ANALYTICS_API_URL ||
-  import.meta.env.VITE_OPERATOR_API_URL ||
+  process.env.REACT_APP_USER_API_URL ||
+  process.env.REACT_APP_MALL_API_URL ||
+  process.env.REACT_APP_ANALYTICS_API_URL ||
+  process.env.REACT_APP_OPERATOR_API_URL ||
   'https://api-gateway-kd0r.onrender.com'
 ).replace(/^http:\/\//i, 'https://');
 
@@ -32,7 +31,7 @@ API.interceptors.response.use(
 );
 
 // ══════════════════════════════════════════════════════════════════
-// USER SERVICE APIs  →  gateway routes to user-service
+// USER SERVICE APIs
 // ══════════════════════════════════════════════════════════════════
 export const userAuth = {
   register: (data)  => API.post('/api/auth/users/register', data),
@@ -56,7 +55,7 @@ export const userService = {
 };
 
 // ══════════════════════════════════════════════════════════════════
-// OPERATOR SERVICE APIs  →  gateway routes to operator-service
+// OPERATOR SERVICE APIs
 // ══════════════════════════════════════════════════════════════════
 export const operatorAuth = {
   register: (data) => API.post('/api/auth/operators/register', data),
@@ -79,7 +78,7 @@ export const operatorService = {
 };
 
 // ══════════════════════════════════════════════════════════════════
-// MALL API SERVICE APIs  →  gateway routes to mall-api-service
+// MALL API SERVICE APIs
 // ══════════════════════════════════════════════════════════════════
 export const mallService = {
   // Stores
@@ -104,7 +103,7 @@ export const mallService = {
 };
 
 // ══════════════════════════════════════════════════════════════════
-// ANALYTICS SERVICE APIs  →  gateway routes to analytics-service
+// ANALYTICS SERVICE APIs
 // ══════════════════════════════════════════════════════════════════
 export const analyticsService = {
   summary:         ()       => API.get('/api/analytics/summary'),
@@ -119,7 +118,7 @@ export const analyticsService = {
   deleteLog:       (id)     => API.delete(`/api/analytics/logs/${id}`),
   sendEvent:       (data)   => API.post('/api/internal/events', data, {
     headers: {
-      'x-api-key': import.meta.env.VITE_INTERNAL_API_KEY || 'MallInternalKey2026'
+      'x-api-key': process.env.REACT_APP_INTERNAL_API_KEY || 'MallInternalKey2026'
     }
   }),
 };

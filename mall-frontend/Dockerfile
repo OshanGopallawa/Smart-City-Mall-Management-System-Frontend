@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Accept real URLs as build args from Render env vars
+# Accept REACT_APP_ prefixed build args (CRA convention)
 ARG REACT_APP_USER_API_URL
 ARG REACT_APP_OPERATOR_API_URL
 ARG REACT_APP_MALL_API_URL
@@ -13,7 +13,7 @@ ARG REACT_APP_ANALYTICS_API_URL
 ARG REACT_APP_INTERNAL_API_KEY
 ARG REACT_APP_API_URL
 
-# Bake them into the React bundle at build time
+# Bake them into the CRA bundle at build time
 ENV REACT_APP_USER_API_URL=$REACT_APP_USER_API_URL
 ENV REACT_APP_OPERATOR_API_URL=$REACT_APP_OPERATOR_API_URL
 ENV REACT_APP_MALL_API_URL=$REACT_APP_MALL_API_URL
