@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
-const GATEWAY_URL = import.meta.env.VITE_USER_API_URL || 'http://localhost:80';
+// All requests go through the API gateway which routes to the right service
+const GATEWAY_URL = process.env.REACT_APP_USER_API_URL
+  || process.env.REACT_APP_MALL_API_URL
+  || process.env.REACT_APP_ANALYTICS_API_URL
+  || process.env.REACT_APP_OPERATOR_API_URL
+  || 'http://localhost:80';
 
 // ─── Single axios instance pointing at gateway ─────────────────────
 const API = axios.create({ baseURL: GATEWAY_URL });
@@ -36,16 +41,16 @@ export const userAuth = {
 };
 
 export const userService = {
-  getAll:         (params)     => API.get('/api/users', { params }),
-  getById:        (id)         => API.get(`/api/users/${id}`),
-  update:         (id, data)   => API.put(`/api/users/${id}`, data),
-  changePassword: (id, data)   => API.put(`/api/users/${id}/password`, data),
-  delete:         (id)         => API.delete(`/api/users/${id}`),
-  visitedStores:  (id)         => API.get(`/api/users/${id}/visited-stores`),
-  visitStore:     (id, data)   => API.post(`/api/users/${id}/visit-store`, data),
+  getAll:         (params) => API.get('/api/users', { params }),
+  getById:        (id)     => API.get(`/api/users/${id}`),
+  update:         (id, data) => API.put(`/api/users/${id}`, data),
+  changePassword: (id, data) => API.put(`/api/users/${id}/password`, data),
+  delete:         (id)     => API.delete(`/api/users/${id}`),
+  visitedStores:  (id)     => API.get(`/api/users/${id}/visited-stores`),
+  visitStore:     (id, data) => API.post(`/api/users/${id}/visit-store`, data),
   browseStores:   (id, params) => API.get(`/api/users/${id}/browse-stores`, { params }),
-  browseDeals:    (id)         => API.get(`/api/users/${id}/browse-deals`),
-  browseEvents:   (id)         => API.get(`/api/users/${id}/browse-events`),
+  browseDeals:    (id)     => API.get(`/api/users/${id}/browse-deals`),
+  browseEvents:   (id)     => API.get(`/api/users/${id}/browse-events`),
 };
 
 // ══════════════════════════════════════════════════════════════════
@@ -59,33 +64,36 @@ export const operatorAuth = {
 };
 
 export const operatorService = {
-  getAll:         (params)        => API.get('/api/operators', { params }),
-  getById:        (id)            => API.get(`/api/operators/${id}`),
-  update:         (id, data)      => API.put(`/api/operators/${id}`, data),
-  changePassword: (id, data)      => API.put(`/api/operators/${id}/password`, data),
-  delete:         (id)            => API.delete(`/api/operators/${id}`),
-  createStore:    (data)          => API.post('/api/operators/actions/stores', data),
+  getAll:         (params)   => API.get('/api/operators', { params }),
+  getById:        (id)       => API.get(`/api/operators/${id}`),
+  update:         (id, data) => API.put(`/api/operators/${id}`, data),
+  changePassword: (id, data) => API.put(`/api/operators/${id}/password`, data),
+  delete:         (id)       => API.delete(`/api/operators/${id}`),
+  createStore:    (data)     => API.post('/api/operators/actions/stores', data),
   updateStore:    (storeId, data) => API.put(`/api/operators/actions/stores/${storeId}`, data),
-  createDeal:     (data)          => API.post('/api/operators/actions/deals', data),
-  createEvent:    (data)          => API.post('/api/operators/actions/events', data),
-  myStore:        ()              => API.get('/api/operators/actions/my-store'),
+  createDeal:     (data)     => API.post('/api/operators/actions/deals', data),
+  createEvent:    (data)     => API.post('/api/operators/actions/events', data),
+  myStore:        ()         => API.get('/api/operators/actions/my-store'),
 };
 
 // ══════════════════════════════════════════════════════════════════
 // MALL API SERVICE APIs  →  gateway routes to mall-api-service
 // ══════════════════════════════════════════════════════════════════
 export const mallService = {
+  // Stores
   getStores:   (params)   => API.get('/api/stores', { params }),
   getStore:    (id)       => API.get(`/api/stores/${id}`),
   createStore: (data)     => API.post('/api/stores', data),
   updateStore: (id, data) => API.put(`/api/stores/${id}`, data),
   deleteStore: (id)       => API.delete(`/api/stores/${id}`),
   storeDeals:  (id)       => API.get(`/api/stores/${id}/deals`),
+  // Deals
   getDeals:    (params)   => API.get('/api/deals', { params }),
   getDeal:     (id)       => API.get(`/api/deals/${id}`),
   createDeal:  (data)     => API.post('/api/deals', data),
   updateDeal:  (id, data) => API.put(`/api/deals/${id}`, data),
   deleteDeal:  (id)       => API.delete(`/api/deals/${id}`),
+  // Events
   getEvents:   (params)   => API.get('/api/events', { params }),
   getEvent:    (id)       => API.get(`/api/events/${id}`),
   createEvent: (data)     => API.post('/api/events', data),
@@ -108,6 +116,8 @@ export const analyticsService = {
   logs:            (params) => API.get('/api/analytics/logs', { params }),
   deleteLog:       (id)     => API.delete(`/api/analytics/logs/${id}`),
   sendEvent:       (data)   => API.post('/api/internal/events', data, {
-    headers: { 'x-api-key': import.meta.env.VITE_INTERNAL_API_KEY || 'MallInternalKey2026' }
+    headers: {
+      'x-api-key': process.env.REACT_APP_INTERNAL_API_KEY || 'MallInternalKey2026'
+    }
   }),
 };
