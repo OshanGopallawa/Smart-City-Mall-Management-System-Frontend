@@ -2,11 +2,14 @@ import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
 // All requests go through the API gateway which routes to the right service
-const GATEWAY_URL = process.env.REACT_APP_USER_API_URL
+const RAW_URL = process.env.REACT_APP_USER_API_URL
   || process.env.REACT_APP_MALL_API_URL
   || process.env.REACT_APP_ANALYTICS_API_URL
   || process.env.REACT_APP_OPERATOR_API_URL
-  ||'https://api-gateway-kd0r.onrender.com'
+  || 'https://api-gateway-kd0r.onrender.com';
+
+// Force HTTPS to prevent mixed content errors
+const GATEWAY_URL = RAW_URL.replace(/^http:\/\//i, 'https://');
 
 // ─── Single axios instance pointing at gateway ─────────────────────
 const API = axios.create({ baseURL: GATEWAY_URL });
