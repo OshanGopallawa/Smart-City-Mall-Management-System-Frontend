@@ -69,9 +69,9 @@ jobs:
 
       - uses: github/codeql-action/upload-sarif@v3
         if: always()
+        continue-on-error: true
         with:
           sarif_file: snyk.sarif
-        continue-on-error: true
 
   # ─────────────────────────────────────────────
   # JOB 3: Build & Push Docker Image to GHCR
@@ -131,7 +131,7 @@ jobs:
           sarif_file: trivy.sarif
 
   # ─────────────────────────────────────────────
-  # JOB 4: Deploy to Render
+  # JOB 4: Deploy to Render via Deploy Hook
   # ─────────────────────────────────────────────
   deploy:
     name: Deploy to Render
@@ -140,26 +140,21 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment: production
     steps:
-      - name: Trigger Render deploy
-        id: deploy
+      - name: Trigger Render deploy hook
         run: |
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            "https://api.render.com/v1/services/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}/deploys" \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json" \
-            -d '{"clearCache": false}')
-          if [ "$RESPONSE" != "201" ]; then
-            echo "Deploy trigger failed with HTTP $RESPONSE"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X GET \
+            "${{ secrets.RENDER_DEPLOY_HOOK_URL }}")
+          if [ "$RESPONSE" != "200" ]; then
+            echo "Deploy hook failed with HTTP $RESPONSE"
             exit 1
           fi
-          echo "Deploy triggered successfully"
+          echo "Deploy hook triggered successfully"
 
       - name: Wait for deploy
-        run: sleep 40
+        run: sleep 90
 
       - name: Smoke test
         run: |
-          curl --fail --retry 8 --retry-delay 10 --retry-connrefused \
-            ${{ secrets.FRONTEND_HEALTH_URL }} \
-            || exit 1
+          curl --fail --retry 8 --retry-delay 15 --retry-connrefused \
+            ${{ secrets.FRONTEND_HEALTH_URL }} || exit 1
           echo "Frontend smoke test passed"
