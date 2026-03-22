@@ -1,15 +1,14 @@
 import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
-// All requests go through the API gateway which routes to the right service
-const RAW_URL = process.env.REACT_APP_USER_API_URL
-  || process.env.REACT_APP_MALL_API_URL
-  || process.env.REACT_APP_ANALYTICS_API_URL
-  || process.env.REACT_APP_OPERATOR_API_URL
-  || 'https://api-gateway-kd0r.onrender.com';
-
-// Force HTTPS to prevent mixed content errors
-const GATEWAY_URL = RAW_URL.replace(/^http:\/\//i, 'https://');
+// Vite requires import.meta.env and VITE_ prefix (not process.env / REACT_APP_)
+const GATEWAY_URL = (
+  import.meta.env.VITE_USER_API_URL ||
+  import.meta.env.VITE_MALL_API_URL ||
+  import.meta.env.VITE_ANALYTICS_API_URL ||
+  import.meta.env.VITE_OPERATOR_API_URL ||
+  'https://api-gateway-kd0r.onrender.com'
+).replace(/^http:\/\//i, 'https://');
 
 // ─── Single axios instance pointing at gateway ─────────────────────
 const API = axios.create({ baseURL: GATEWAY_URL });
@@ -44,16 +43,16 @@ export const userAuth = {
 };
 
 export const userService = {
-  getAll:         (params) => API.get('/api/users', { params }),
-  getById:        (id)     => API.get(`/api/users/${id}`),
-  update:         (id, data) => API.put(`/api/users/${id}`, data),
-  changePassword: (id, data) => API.put(`/api/users/${id}/password`, data),
-  delete:         (id)     => API.delete(`/api/users/${id}`),
-  visitedStores:  (id)     => API.get(`/api/users/${id}/visited-stores`),
-  visitStore:     (id, data) => API.post(`/api/users/${id}/visit-store`, data),
+  getAll:         (params)     => API.get('/api/users', { params }),
+  getById:        (id)         => API.get(`/api/users/${id}`),
+  update:         (id, data)   => API.put(`/api/users/${id}`, data),
+  changePassword: (id, data)   => API.put(`/api/users/${id}/password`, data),
+  delete:         (id)         => API.delete(`/api/users/${id}`),
+  visitedStores:  (id)         => API.get(`/api/users/${id}/visited-stores`),
+  visitStore:     (id, data)   => API.post(`/api/users/${id}/visit-store`, data),
   browseStores:   (id, params) => API.get(`/api/users/${id}/browse-stores`, { params }),
-  browseDeals:    (id)     => API.get(`/api/users/${id}/browse-deals`),
-  browseEvents:   (id)     => API.get(`/api/users/${id}/browse-events`),
+  browseDeals:    (id)         => API.get(`/api/users/${id}/browse-deals`),
+  browseEvents:   (id)         => API.get(`/api/users/${id}/browse-events`),
 };
 
 // ══════════════════════════════════════════════════════════════════
@@ -67,16 +66,16 @@ export const operatorAuth = {
 };
 
 export const operatorService = {
-  getAll:         (params)   => API.get('/api/operators', { params }),
-  getById:        (id)       => API.get(`/api/operators/${id}`),
-  update:         (id, data) => API.put(`/api/operators/${id}`, data),
-  changePassword: (id, data) => API.put(`/api/operators/${id}/password`, data),
-  delete:         (id)       => API.delete(`/api/operators/${id}`),
-  createStore:    (data)     => API.post('/api/operators/actions/stores', data),
+  getAll:         (params)        => API.get('/api/operators', { params }),
+  getById:        (id)            => API.get(`/api/operators/${id}`),
+  update:         (id, data)      => API.put(`/api/operators/${id}`, data),
+  changePassword: (id, data)      => API.put(`/api/operators/${id}/password`, data),
+  delete:         (id)            => API.delete(`/api/operators/${id}`),
+  createStore:    (data)          => API.post('/api/operators/actions/stores', data),
   updateStore:    (storeId, data) => API.put(`/api/operators/actions/stores/${storeId}`, data),
-  createDeal:     (data)     => API.post('/api/operators/actions/deals', data),
-  createEvent:    (data)     => API.post('/api/operators/actions/events', data),
-  myStore:        ()         => API.get('/api/operators/actions/my-store'),
+  createDeal:     (data)          => API.post('/api/operators/actions/deals', data),
+  createEvent:    (data)          => API.post('/api/operators/actions/events', data),
+  myStore:        ()              => API.get('/api/operators/actions/my-store'),
 };
 
 // ══════════════════════════════════════════════════════════════════
@@ -120,7 +119,7 @@ export const analyticsService = {
   deleteLog:       (id)     => API.delete(`/api/analytics/logs/${id}`),
   sendEvent:       (data)   => API.post('/api/internal/events', data, {
     headers: {
-      'x-api-key': process.env.REACT_APP_INTERNAL_API_KEY || 'MallInternalKey2026'
+      'x-api-key': import.meta.env.VITE_INTERNAL_API_KEY || 'MallInternalKey2026'
     }
   }),
 };
