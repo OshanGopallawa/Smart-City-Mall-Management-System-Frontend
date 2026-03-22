@@ -22,6 +22,13 @@ services:
     build:
       context: ./mall-frontend
       target: production
+      args:
+        - REACT_APP_API_URL=https://api-gateway-kd0r.onrender.com
+        - REACT_APP_USER_API_URL=https://api-gateway-kd0r.onrender.com
+        - REACT_APP_OPERATOR_API_URL=https://api-gateway-kd0r.onrender.com
+        - REACT_APP_MALL_API_URL=https://api-gateway-kd0r.onrender.com
+        - REACT_APP_ANALYTICS_API_URL=https://api-gateway-kd0r.onrender.com
+        - REACT_APP_INTERNAL_API_KEY=MallInternalKey2026
     container_name: mall-frontend
     ports:
       - "3000:3000"
