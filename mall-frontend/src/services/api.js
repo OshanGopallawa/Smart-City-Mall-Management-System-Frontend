@@ -48,9 +48,9 @@ export const userService = {
   delete:         (id)     => API.delete(`/api/users/${id}`),
   visitedStores:  (id)     => API.get(`/api/users/${id}/visited-stores`),
   visitStore:     (id, data) => API.post(`/api/users/${id}/visit-store`, data),
-  browseStores:   (id, params) => API.get('/api/stores', { params }),
-  browseDeals:    (id)         => API.get('/api/deals'),
-  browseEvents:   (id)         => API.get('/api/events'),
+  browseStores:   (id, params) => API.get(`/api/users/${id}/browse-stores`, { params }),
+  browseDeals:    (id)     => API.get(`/api/users/${id}/browse-deals`),
+  browseEvents:   (id)     => API.get(`/api/users/${id}/browse-events`),
 };
 
 // ══════════════════════════════════════════════════════════════════
