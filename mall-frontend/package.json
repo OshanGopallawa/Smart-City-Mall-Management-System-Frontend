@@ -15,7 +15,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "test:ci": "react-scripts test",
+    "lint": "eslint src/"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
