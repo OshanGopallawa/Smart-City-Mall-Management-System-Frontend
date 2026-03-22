@@ -2,10 +2,10 @@ import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
 // All requests go through the API gateway which routes to the right service
-const GATEWAY_URL = process.env.REACT_APP_USER_API_URL
-  || process.env.REACT_APP_MALL_API_URL
-  || process.env.REACT_APP_ANALYTICS_API_URL
-  || process.env.REACT_APP_OPERATOR_API_URL
+const GATEWAY_URL = process.env.VITE_USER_API_URL
+  || process.env.VITE_MALL_API_URL
+  || process.env.VITE_ANALYTICS_API_URL
+  || process.env.VITE_OPERATOR_API_URL
   || 'http://localhost:80';
 
 // ─── Single axios instance pointing at gateway ─────────────────────
@@ -117,7 +117,7 @@ export const analyticsService = {
   deleteLog:       (id)     => API.delete(`/api/analytics/logs/${id}`),
   sendEvent:       (data)   => API.post('/api/internal/events', data, {
     headers: {
-      'x-api-key': process.env.REACT_APP_INTERNAL_API_KEY || 'MallInternalKey2026'
+      'x-api-key': process.env.VITE_INTERNAL_API_KEY || 'MallInternalKey2026'
     }
   }),
 };
