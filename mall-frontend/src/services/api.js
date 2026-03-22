@@ -1,13 +1,7 @@
 import axios from 'axios';
 
 // ─── Single gateway URL ────────────────────────────────────────────
-const GATEWAY_URL = (
-  process.env.REACT_APP_USER_API_URL ||
-  process.env.REACT_APP_MALL_API_URL ||
-  process.env.REACT_APP_ANALYTICS_API_URL ||
-  process.env.REACT_APP_OPERATOR_API_URL ||
-  'https://api-gateway-kd0r.onrender.com'
-).replace(/^http:\/\//i, 'https://');
+const GATEWAY_URL = 'https://api-gateway-kd0r.onrender.com';
 
 // ─── Single axios instance pointing at gateway ─────────────────────
 const API = axios.create({ baseURL: GATEWAY_URL });
