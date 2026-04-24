@@ -55,7 +55,7 @@ function AppRoutes() {
         </ProtectedRoute>
       } />
 
-      {/* Operator routes */}
+     {/* Operator routes */}
       <Route path="/operator/*" element={
         <ProtectedRoute requiredType="operator">
           <Layout>
@@ -66,12 +66,14 @@ function AppRoutes() {
               <Route path="events" element={<OperatorEvents />} />
               <Route path="analytics" element={<AnalyticsDashboard />} />
               <Route path="profile" element={<OperatorProfile />} />
+              <Route path="manage" element={<OperatorManagement />} />
+              <Route path="view/:id" element={<OperatorDetail />} />
+              <Route path="edit/:id" element={<OperatorDetail />} />
               <Route path="*" element={<Navigate to="dashboard" replace />} />
             </Routes>
           </Layout>
         </ProtectedRoute>
-      } />
-
+    } />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
