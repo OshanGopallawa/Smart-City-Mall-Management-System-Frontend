@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './index.css';
 
-// Pages
+// Pagess
 import Landing from './pages/Landing';
 import { UserLogin, UserRegister } from './pages/auth/UserAuth';
 import { OperatorLogin, OperatorRegister } from './pages/auth/OperatorAuth';
