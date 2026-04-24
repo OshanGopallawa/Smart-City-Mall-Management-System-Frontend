@@ -17,6 +17,8 @@ import { UserProfile, OperatorProfile } from './pages/user/Profile';
 import OperatorDashboard from './pages/operator/OperatorDashboard';
 import OperatorStores from './pages/operator/OperatorStores';
 import OperatorDeals from './pages/operator/OperatorDeals';
+import OperatorManagement from './pages/operator/OperatorManagement';
+import OperatorDetail from './pages/operator/OperatorDetail';
 import AnalyticsDashboard from './pages/analytics/AnalyticsDashboard';
 
 // Protected route wrapper
